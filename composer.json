@@ -1,0 +1,28 @@
+{
+    "name": "zahzah/module-pharmacy",
+    "autoload": {
+        "psr-4": {
+            "Zahzah\\ModulePharmacy\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "hamzah",
+            "email": "hamzahnuralfalah@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Zahzah\\ModulePharmacy\\ModulePharmacyServiceProvider"
+            ]
+        }
+    },
+    "require": {
+        "zahzah/laravel-support": "1.x",
+        "zahzah/module-warehouse": "1.x",
+        "zahzah/module-transaction": "1.x"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": false
+}
