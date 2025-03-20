@@ -1,8 +1,9 @@
 <?php
 
-namespace Zahzah\ModulePharmacy\Enums\PharmacySale;
+namespace Hanafalah\ModulePharmacy\Enums\PharmacySale;
 
-enum ActivityStatus: int{
+enum ActivityStatus: int
+{
     case PHARMACY_SALE_VISIT_DRAFT     = 1;
     case PHARMACY_SALE_VISIT_PROCESSED = 2;
     case PHARMACY_SALE_VISIT_FINISHED  = 3;

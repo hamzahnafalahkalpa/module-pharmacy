@@ -1,9 +1,10 @@
 <?php
 
-namespace Zahzah\ModulePharmacy\Contracts;
+namespace Hanafalah\ModulePharmacy\Contracts;
 
-use Gii\ModuleExamination\Contracts\Examination;
+use Hanafalah\ModuleExamination\Contracts\Examination;
 
-interface PharmacyExamination extends Examination{
+interface PharmacyExamination extends Examination
+{
     public function commitExamination(): array;
 }

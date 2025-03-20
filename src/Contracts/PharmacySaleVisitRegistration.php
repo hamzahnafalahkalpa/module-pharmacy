@@ -1,9 +1,10 @@
 <?php
 
-namespace Zahzah\ModulePharmacy\Contracts;
+namespace Hanafalah\ModulePharmacy\Contracts;
 
-use Zahzah\ModulePatient\Contracts\VisitRegistration;
+use Hanafalah\ModulePatient\Contracts\VisitRegistration;
 
-interface PharmacySaleVisitRegistration extends VisitRegistration{
+interface PharmacySaleVisitRegistration extends VisitRegistration
+{
     public function storePharmacySaleVisitRegistration(): array;
 }

@@ -2,8 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Zahzah\ModulePharmacy;
-use Zahzah\LaravelSupport\Providers\BaseServiceProvider;
+namespace Hanafalah\ModulePharmacy;
+
+use Hanafalah\LaravelSupport\Providers\BaseServiceProvider;
 
 class ModulePharmacyServiceProvider extends BaseServiceProvider
 {
@@ -15,9 +16,10 @@ class ModulePharmacyServiceProvider extends BaseServiceProvider
     public function register()
     {
         $this->registerMainClass(ModulePharmacy::class)
-             ->registerCommandService(Providers\CommandServiceProvider::class)
-             ->registers([
-                '*','Services' => function(){
+            ->registerCommandService(Providers\CommandServiceProvider::class)
+            ->registers([
+                '*',
+                'Services' => function () {
                     $this->binds([
                         Contracts\ModulePharmacy::class                  => ModulePharmacy::class,
                         Contracts\PharmacySale::class                    => Schemas\PharmacySale::class,
@@ -26,11 +28,12 @@ class ModulePharmacyServiceProvider extends BaseServiceProvider
                         Contracts\PharmacyExamination::class             => Schemas\PharmacyExamination::class
                     ]);
                 }
-        ]);
+            ]);
         $this->setupExaminationLists();
     }
 
-    private function setupExaminationLists(): self{
+    private function setupExaminationLists(): self
+    {
         $examination_lists = config('database.examinations', []);
         $lists = config('module-pharmacy.examinations', []);
         $examination_lists = array_merge($examination_lists, $lists);
@@ -43,11 +46,13 @@ class ModulePharmacyServiceProvider extends BaseServiceProvider
      *
      * @return string
      */
-    protected function dir(): string{
-        return __DIR__.'/';
+    protected function dir(): string
+    {
+        return __DIR__ . '/';
     }
 
-    protected function migrationPath(string $path = ''): string{
+    protected function migrationPath(string $path = ''): string
+    {
         return database_path($path);
     }
 }

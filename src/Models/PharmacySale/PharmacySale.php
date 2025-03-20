@@ -1,17 +1,21 @@
 <?php
 
-namespace Zahzah\ModulePharmacy\Models\PharmacySale;
+namespace Hanafalah\ModulePharmacy\Models\PharmacySale;
 
-use Zahzah\LaravelSupport\Concerns\Support\HasActivity;
-use Zahzah\ModulePatient\Models\EMR\VisitPatient;
-use Zahzah\ModulePharmacy\Enums\PharmacySale\{
-    Activity, ActivityStatus, Status
+use Hanafalah\LaravelSupport\Concerns\Support\HasActivity;
+use Hanafalah\ModulePatient\Models\EMR\VisitPatient;
+use Hanafalah\ModulePharmacy\Enums\PharmacySale\{
+    Activity,
+    ActivityStatus,
+    Status
 };
-use Zahzah\ModulePharmacy\Resources\PharmacySale\{
-    ShowPharmacySale, ViewPharmacySale
+use Hanafalah\ModulePharmacy\Resources\PharmacySale\{
+    ShowPharmacySale,
+    ViewPharmacySale
 };
 
-class PharmacySale extends VisitPatient{
+class PharmacySale extends VisitPatient
+{
     use HasActivity;
     protected $table = 'visit_patients';
 
@@ -31,7 +35,8 @@ class PharmacySale extends VisitPatient{
         'medical_record'  => 'string'
     ];
 
-    public function getPropsQuery(): array{
+    public function getPropsQuery(): array
+    {
         return [
             'name'            => 'props->prop_patient->prop_people->name',
             'dob'             => 'props->prop_patient->prop_people->dob',
@@ -42,13 +47,14 @@ class PharmacySale extends VisitPatient{
         ];
     }
 
-    protected static function booted(): void{
+    protected static function booted(): void
+    {
         // parent::booted();
-        static::addGlobalScope(self::PHARMACY_SALE_VISIT,function($query){
-            $query->withoutGlobalScopes()->where('flag',self::PHARMACY_SALE_VISIT);
+        static::addGlobalScope(self::PHARMACY_SALE_VISIT, function ($query) {
+            $query->withoutGlobalScopes()->where('flag', self::PHARMACY_SALE_VISIT);
         });
-        static::creating(function($query){
-            if (!isset($query->visit_code)){
+        static::creating(function ($query) {
+            if (!isset($query->visit_code)) {
                 $query->visit_code = static::hasEncoding('PHARMACY_SALE');
             }
             if (!isset($query->status))     $query->status = Status::PENDING->value;
@@ -57,18 +63,20 @@ class PharmacySale extends VisitPatient{
         });
     }
 
-    public function toViewApi(){
+    public function toViewApi()
+    {
         return new ViewPharmacySale($this);
     }
 
-    public function toShowApi(){
+    public function toShowApi()
+    {
         return new ShowPharmacySale($this);
     }
 
     public static array $activityList = [
-        Activity::PHARMACY_SALE_VISIT->value.'_'.ActivityStatus::PHARMACY_SALE_VISIT_DRAFT->value     => ['flag' => 'PHARMACY_SALE_VISIT_DRAFT', 'message' => 'Antrian peresepan'],
-        Activity::PHARMACY_SALE_VISIT->value.'_'.ActivityStatus::PHARMACY_SALE_VISIT_PROCESSED->value  => ['flag' => 'PHARMACY_SALE_VISIT_PROCESSED', 'message' => 'Kunjungan dilakukan'],
-        Activity::PHARMACY_SALE_VISIT->value.'_'.ActivityStatus::PHARMACY_SALE_VISIT_FINISHED->value  => ['flag' => 'PHARMACY_SALE_VISIT_FINISHED', 'message' => 'Kunjungan selesai'],
-        Activity::PHARMACY_SALE_VISIT->value.'_'.ActivityStatus::PHARMACY_SALE_VISIT_CANCELLED->value => ['flag' => 'PHARMACY_SALE_VISIT_CANCELLED', 'message' => 'Kunjungan dibatalkan'],
+        Activity::PHARMACY_SALE_VISIT->value . '_' . ActivityStatus::PHARMACY_SALE_VISIT_DRAFT->value     => ['flag' => 'PHARMACY_SALE_VISIT_DRAFT', 'message' => 'Antrian peresepan'],
+        Activity::PHARMACY_SALE_VISIT->value . '_' . ActivityStatus::PHARMACY_SALE_VISIT_PROCESSED->value  => ['flag' => 'PHARMACY_SALE_VISIT_PROCESSED', 'message' => 'Kunjungan dilakukan'],
+        Activity::PHARMACY_SALE_VISIT->value . '_' . ActivityStatus::PHARMACY_SALE_VISIT_FINISHED->value  => ['flag' => 'PHARMACY_SALE_VISIT_FINISHED', 'message' => 'Kunjungan selesai'],
+        Activity::PHARMACY_SALE_VISIT->value . '_' . ActivityStatus::PHARMACY_SALE_VISIT_CANCELLED->value => ['flag' => 'PHARMACY_SALE_VISIT_CANCELLED', 'message' => 'Kunjungan dibatalkan'],
     ];
 }

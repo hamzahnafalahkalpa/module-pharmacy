@@ -1,7 +1,8 @@
 <?php
 
-namespace Zahzah\ModulePharmacy\Enums\PharmacySaleVisitRegistration;
+namespace Hanafalah\ModulePharmacy\Enums\PharmacySaleVisitRegistration;
 
-enum Activity: string{
+enum Activity: string
+{
     case PHARMACY_FLOW = 'PHARMACY_FLOW';
 }

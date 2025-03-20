@@ -1,20 +1,17 @@
 <?php
 
-namespace Zahzah\ModulePharmacy\Resources\PharmacySaleVisitRegistration;
+namespace Hanafalah\ModulePharmacy\Resources\PharmacySaleVisitRegistration;
 
-use Zahzah\ModulePatient\Resources\VisitRegistration\ShowVisitRegistration;
+use Hanafalah\ModulePatient\Resources\VisitRegistration\ShowVisitRegistration;
 
 class ShowPharmacySaleVisitRegistration extends ShowVisitRegistration
 {
     public function toArray(\Illuminate\Http\Request $request): array
     {
-        $arr = [
-
-        ];
+        $arr = [];
         $view = $this->resolveNow(new ViewPharmacySaleVisitRegistration($this));
-        $arr = $this->mergeArray(parent::toArray($request),$view,$arr);
-        
+        $arr = $this->mergeArray(parent::toArray($request), $view, $arr);
+
         return $arr;
     }
 }
-

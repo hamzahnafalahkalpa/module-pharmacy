@@ -1,8 +1,9 @@
 <?php
 
-namespace Zahzah\ModulePharmacy\Enums\PharmacySale;
+namespace Hanafalah\ModulePharmacy\Enums\PharmacySale;
 
-enum Status: string{
+enum Status: string
+{
     case PENDING = 'PENDING';
     case PROCESS = 'PROCESS';
 }

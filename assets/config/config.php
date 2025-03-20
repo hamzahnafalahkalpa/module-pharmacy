@@ -1,18 +1,18 @@
 <?php
 
-use Zahzah\ModulePharmacy\{
+use Hanafalah\ModulePharmacy\{
     Models as ModulePharmacyModels,
     Commands as ModulePharmacyCommands,
     Schemas
 };
-use Zahzah\ModulePharmacy\Contracts;
+use Hanafalah\ModulePharmacy\Contracts;
 
 return [
     'commands' => [
         // ModulePharmacyCommands\InstallMakeCommand::class
     ],
     "encodings" => [
-        'PHARMACY_SALE' => ['flag'=>'PHARMACY_SALE','name'=>'Kode Penjualan Resep Obat/BMHP'],
+        'PHARMACY_SALE' => ['flag' => 'PHARMACY_SALE', 'name' => 'Kode Penjualan Resep Obat/BMHP'],
     ],
     'contracts' => [
         'pharmacy_examination'             => Contracts\PharmacyExamination::class,

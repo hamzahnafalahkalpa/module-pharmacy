@@ -1,8 +1,8 @@
 {
-    "name": "zahzah/module-pharmacy",
+    "name": "hanafalah/module-pharmacy",
     "autoload": {
         "psr-4": {
-            "Zahzah\\ModulePharmacy\\": "src/"
+            "Hanafalah\\ModulePharmacy\\": "src/"
         }
     },
     "authors": [
@@ -14,14 +14,14 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Zahzah\\ModulePharmacy\\ModulePharmacyServiceProvider"
+                "Hanafalah\\ModulePharmacy\\ModulePharmacyServiceProvider"
             ]
         }
     },
     "require": {
-        "zahzah/laravel-support": "1.x",
-        "zahzah/module-warehouse": "1.x",
-        "zahzah/module-transaction": "1.x"
+        "hanafalah/laravel-support": "1.x",
+        "hanafalah/module-warehouse": "1.x",
+        "hanafalah/module-transaction": "1.x"
     },
     "minimum-stability": "dev",
     "prefer-stable": false

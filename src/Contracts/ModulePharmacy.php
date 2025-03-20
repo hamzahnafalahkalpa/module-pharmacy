@@ -1,9 +1,7 @@
 <?php
 
-namespace Zahzah\ModulePharmacy\Contracts;
+namespace Hanafalah\ModulePharmacy\Contracts;
 
-use Zahzah\LaravelSupport\Contracts\DataManagement;
+use Hanafalah\LaravelSupport\Contracts\DataManagement;
 
-interface ModulePharmacy extends DataManagement{
-
-}
+interface ModulePharmacy extends DataManagement {}

@@ -1,9 +1,7 @@
 <?php
 
-namespace Zahzah\ModulePharmacy\Contracts;
+namespace Hanafalah\ModulePharmacy\Contracts;
 
-use Gii\ModuleExamination\Contracts\Examination\Assessment\Assessment;
+use Hanafalah\ModuleExamination\Contracts\Examination\Assessment\Assessment;
 
-interface PharmacySaleExamination extends Assessment{
-
-}
+interface PharmacySaleExamination extends Assessment {}

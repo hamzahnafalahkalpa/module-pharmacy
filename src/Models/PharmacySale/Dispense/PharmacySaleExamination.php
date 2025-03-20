@@ -1,12 +1,14 @@
 <?php
 
-namespace Zahzah\ModulePharmacy\Models\PharmacySale\Dispense;
+namespace Hanafalah\ModulePharmacy\Models\PharmacySale\Dispense;
 
-use Gii\ModuleExamination\Models\Examination\Assessment\Assessment;
+use Hanafalah\ModuleExamination\Models\Examination\Assessment\Assessment;
 
-class PharmacySaleExamination extends Assessment {
+class PharmacySaleExamination extends Assessment
+{
     protected $table = 'assessments';
     public $specific = [
-        'consument', 'dispense'
+        'consument',
+        'dispense'
     ];
 }
