@@ -14,10 +14,17 @@ return [
     "encodings" => [
         'PHARMACY_SALE' => ['flag' => 'PHARMACY_SALE', 'name' => 'Kode Penjualan Resep Obat/BMHP'],
     ],
-    'contracts' => [
-        'pharmacy_examination'             => Contracts\PharmacyExamination::class,
-        'pharmacy_sale_examination'        => Contracts\PharmacySaleExamination::class,
-        'pharmacy_sale_visit_registration' => Contracts\PharmacySaleVisitRegistration::class
+    'app' => [
+        'contracts' => [
+            //ADD YOUR CONTRACTS HERE
+            'pharmacy_examination'             => Contracts\PharmacyExamination::class,
+            'pharmacy_sale_examination'        => Contracts\PharmacySaleExamination::class,
+            'pharmacy_sale_visit_registration' => Contracts\PharmacySaleVisitRegistration::class
+        ],
+    ],
+    'libs' => [
+        'model' => 'Models',
+        'contract' => 'Contracts'
     ],
     'database' => [
         'models' => [
