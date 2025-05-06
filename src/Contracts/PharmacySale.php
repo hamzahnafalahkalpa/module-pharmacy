@@ -3,7 +3,7 @@
 namespace Hanafalah\ModulePharmacy\Contracts;
 
 use Illuminate\Database\Eloquent\Model;
-use Hanafalah\LaravelSupport\Contracts\DataManagement;
+use Hanafalah\LaravelSupport\Contracts\Supports\DataManagement;
 
 interface PharmacySale extends DataManagement
 {
