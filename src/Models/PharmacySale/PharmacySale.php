@@ -63,14 +63,14 @@ class PharmacySale extends VisitPatient
         });
     }
 
-    public function toViewApi()
+    public function getViewResource()
     {
-        return new ViewPharmacySale($this);
+        return ViewPharmacySale::class;
     }
 
-    public function toShowApi()
+    public function getShowResource()
     {
-        return new ShowPharmacySale($this);
+        return ShowPharmacySale::class;
     }
 
     public static array $activityList = [
