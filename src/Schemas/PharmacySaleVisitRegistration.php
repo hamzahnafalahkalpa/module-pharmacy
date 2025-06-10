@@ -2,7 +2,7 @@
 
 namespace Hanafalah\ModulePharmacy\Schemas;
 
-use Hanafalah\ModuleMedicService\Enums\MedicServiceFlag;
+use Hanafalah\ModuleMedicService\Enums\Label;
 use Illuminate\Database\Eloquent\Builder;
 use Hanafalah\ModulePharmacy\Contracts\PharmacySaleVisitRegistration as ContractsPharmacySaleVisitRegistration;
 use Illuminate\Database\Eloquent\Model;
@@ -122,7 +122,7 @@ class PharmacySaleVisitRegistration extends VisitRegistration implements Contrac
                 'reported_at'   => null,
             ],
             'patient_type_id'   => $attributes['patient_type_id'] ?? null,
-            'medic_service_id'  => $this->MedicServiceModel()->where('flag', MedicServiceFlag::PHARMACY->value)->where('name', 'Instalasi Farmasi')->firstOrFail()->service->getKey(),
+            'medic_service_id'  => $this->MedicServiceModel()->where('flag', Label::PHARMACY->value)->where('name', 'Instalasi Farmasi')->firstOrFail()->service->getKey(),
             'medic_services'    => [],
             'id' => $attributes['id'] ?? null
         ]);
