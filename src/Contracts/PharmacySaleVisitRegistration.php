@@ -2,9 +2,8 @@
 
 namespace Hanafalah\ModulePharmacy\Contracts;
 
-use Hanafalah\ModulePatient\Contracts\VisitRegistration;
+use Hanafalah\ModulePatient\Contracts\Schemas\VisitRegistration;
 
 interface PharmacySaleVisitRegistration extends VisitRegistration
 {
-    public function storePharmacySaleVisitRegistration(): array;
 }

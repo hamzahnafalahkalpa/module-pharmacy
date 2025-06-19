@@ -18,15 +18,10 @@ class PharmacySale extends SchemasVisitPatient implements ContractsPharmacySale
     protected string $__entity    = 'PharmacySale';
     public static $pharmacy_sale;
 
-    protected array $__resources = [
-        'view' => ViewPharmacySale::class,
-        'show' => ShowPharmacySale::class
-    ];
-
     protected array $__cache = [
         'show' => [
-            'name'     => 'pharmacy-sale',
-            'tags'     => ['pharmacy-sale', 'pharmacy-sale-show'],
+            'name'     => 'pharmacy_sale',
+            'tags'     => ['pharmacy_sale', 'pharmacy_sale-show'],
             'duration' => 60
         ]
     ];

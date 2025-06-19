@@ -3,6 +3,7 @@
 namespace Hanafalah\ModulePharmacy\Schemas;
 
 use Hanafalah\ModuleMedicService\Enums\Label;
+use Hanafalah\ModulePatient\Contracts\Data\VisitRegistrationData;
 use Illuminate\Database\Eloquent\Builder;
 use Hanafalah\ModulePharmacy\Contracts\PharmacySaleVisitRegistration as ContractsPharmacySaleVisitRegistration;
 use Illuminate\Database\Eloquent\Model;
@@ -21,88 +22,21 @@ class PharmacySaleVisitRegistration extends VisitRegistration implements Contrac
     protected string $__entity = 'PharmacySaleVisitRegistration';
     public static $pharmacy_sale_visit_registration;
 
-    protected array $__resources = [
-        'view' => ViewPharmacySaleVisitRegistration::class,
-        'show' => ShowPharmacySaleVisitRegistration::class
-    ];
-
     protected array $__cache = [
         'show' => [
-            'name'     => 'pharmacy-sale-visit-registration',
-            'tags'     => ['pharmacy-sale-visit-registration', 'pharmacy-sale-visit-registration-show'],
+            'name'     => 'pharmacy_sale_visit_registration',
+            'tags'     => ['pharmacy_sale_visit_registration', 'pharmacy_sale_visit_registration-show'],
             'duration' => 60
         ]
     ];
 
-    public function storePharmacySaleVisitRegistration(): array
-    {
-        return $this->transaction(function () {
-            return $this->showVisitRegistration($this->prepareStorePharmacySaleVisitRegistration());
-        });
-    }
-
-    protected function showUsingRelation()
-    {
-        return [
-            'visitPatient' => function ($query) {
-                $query->with([
-                    'patient' => function ($query) {
-                        $query->with(['reference.cardIdentities', 'cardIdentities']);
-                    },
-                    'transaction.consument',
-                    'services'
-                ]);
-            },
-            'medicService.service',
-            'visitExamination',
-            'patientType',
-            'headDoctor'
-        ];
-    }
-
-    public function viewUsingRelation(): array
-    {
-        return [
-            'medicService',
-            'patientType',
-            'visitExamination',
-            'visitPatient' => function ($query) {
-                $query->with([
-                    'patient',
-                    'transaction.consument'
-                ]);
-            }
-        ];
-    }
-
-    public function visitRegistration(mixed $conditionals = null): Builder
-    {
+    public function visitRegistration(mixed $conditionals = null): Builder{
         $medic_service_id  = $this->MedicServiceModel()->where('name', 'Instalasi Farmasi')->first()->getKey();
 
-        return $this->VisitRegistrationModel()
-            ->conditionals($conditionals ?? [])
-            ->with('visitExamination')
-            ->when(isset(request()->search_value), function ($query) {
-                request()->merge([
-                    'search_medical_record'  => request()->search_value,
-                    'search_name'            => request()->search_value,
-                    'search_nik'             => request()->search_value,
-                    'search_crew_id'         => request()->search_value,
-                    'search_dob'             => request()->search_value,
-                    'search_consument_name'  => request()->search_value,
-                    'search_consument_phone' => request()->search_value,
-                    'search_value'           => null
-                ]);
-                $query->whereHasMorph('visitPatient', [$this->PharmacySaleModelMorph()], function ($query) {
-                    $query->whereHas('patient', fn($q) => $q->withParameters('or'))
-                        ->orWhereHas('transaction.consument', function ($q) {
-                            $q->whereLike('name', request()->search_value);
-                        });
-                });
-            })
+        return $this->generalSchemaModel()
             ->when(isset(request()->search_created_at), function ($query) {
                 $query->withParameters();
-            })->where('medic_service_id', $medic_service_id)->with('visitExamination');
+            })->where('medic_service_id', $medic_service_id);
     }
 
     public function prepareStorePharmacySaleVisitRegistration(?array $attributes = null): Model
@@ -115,7 +49,7 @@ class PharmacySaleVisitRegistration extends VisitRegistration implements Contrac
             $attributes['patient_type_id'] = $patient_type->getKey();
         }
 
-        $pharmacy_visit_registration = parent::prepareStoreVisitRegistration([
+        $pharmacy_visit_registration = parent::prepareStoreVisitRegistration($this->requestDTO(VisitRegistrationData::class,[
             'visit_patient'     => [
                 'patient_id'    => $attributes['patient_id'] ?? null,
                 'flag'          => $this->PharmacySaleModel()::PHARMACY_SALE_VISIT,
@@ -125,7 +59,7 @@ class PharmacySaleVisitRegistration extends VisitRegistration implements Contrac
             'medic_service_id'  => $this->MedicServiceModel()->where('flag', Label::PHARMACY->value)->where('name', 'Instalasi Farmasi')->firstOrFail()->service->getKey(),
             'medic_services'    => [],
             'id' => $attributes['id'] ?? null
-        ]);
+        ]));
         $pharmacy_sale               = $pharmacy_visit_registration->visitPatient;
 
         //SETUP PATIENT AS CONSUMENT

@@ -9,10 +9,7 @@ use Hanafalah\ModulePharmacy\Enums\PharmacySale\{
     ActivityStatus,
     Status
 };
-use Hanafalah\ModulePharmacy\Resources\PharmacySale\{
-    ShowPharmacySale,
-    ViewPharmacySale
-};
+use Hanafalah\ModulePharmacy\Resources\PharmacySale\{ShowPharmacySale,ViewPharmacySale};
 
 class PharmacySale extends VisitPatient
 {
@@ -49,30 +46,20 @@ class PharmacySale extends VisitPatient
 
     protected static function booted(): void
     {
-        // parent::booted();
-        static::addGlobalScope(self::PHARMACY_SALE_VISIT, function ($query) {
-            $query->withoutGlobalScopes()->where('flag', self::PHARMACY_SALE_VISIT);
+        parent::booted();
+        static::addGlobalScope('flag', function ($query) {
+            $query->flagIn(self::PHARMACY_SALE_VISIT);
         });
         static::creating(function ($query) {
-            if (!isset($query->visit_code)) {
-                $query->visit_code = static::hasEncoding('PHARMACY_SALE');
-            }
-            if (!isset($query->status))     $query->status = Status::PENDING->value;
-            if (!isset($query->visited_at)) $query->visited_at = now();
-            if (!isset($query->flag))       $query->flag = self::PHARMACY_SALE_VISIT;
+            $query->visit_code ??= static::hasEncoding('PHARMACY_SALE');
+            $query->status     ??= Status::PENDING->value;
+            $query->visited_at ??= now();
+            $query->flag         = self::PHARMACY_SALE_VISIT;
         });
     }
 
-    public function getViewResource()
-    {
-        return ViewPharmacySale::class;
-    }
-
-    public function getShowResource()
-    {
-        return ShowPharmacySale::class;
-    }
-
+    public function getViewResource(){return ViewPharmacySale::class;}
+    public function getShowResource(){return ShowPharmacySale::class;}
     public static array $activityList = [
         Activity::PHARMACY_SALE_VISIT->value . '_' . ActivityStatus::PHARMACY_SALE_VISIT_DRAFT->value     => ['flag' => 'PHARMACY_SALE_VISIT_DRAFT', 'message' => 'Antrian peresepan'],
         Activity::PHARMACY_SALE_VISIT->value . '_' . ActivityStatus::PHARMACY_SALE_VISIT_PROCESSED->value  => ['flag' => 'PHARMACY_SALE_VISIT_PROCESSED', 'message' => 'Kunjungan dilakukan'],
