@@ -10,7 +10,7 @@ class ViewPharmacySale extends ViewVisitPatient
     {
         $arr = [
             'consument'  => $this->relationValidation('consument', function () {
-                return $this->consument->toViewApi();
+                return $this->consument->toViewApi()->resolve();
             })
         ];
         $arr = $this->mergeArray(parent::toArray($request), $arr);
