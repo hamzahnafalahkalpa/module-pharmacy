@@ -60,7 +60,7 @@ class PharmacySale extends VisitPatient
 
     public function getViewResource(){return ViewPharmacySale::class;}
     public function getShowResource(){return ShowPharmacySale::class;}
-    public static array $activityList = [
+    public array $activityList = [
         Activity::PHARMACY_SALE_VISIT->value . '_' . ActivityStatus::PHARMACY_SALE_VISIT_DRAFT->value     => ['flag' => 'PHARMACY_SALE_VISIT_DRAFT', 'message' => 'Antrian peresepan'],
         Activity::PHARMACY_SALE_VISIT->value . '_' . ActivityStatus::PHARMACY_SALE_VISIT_PROCESSED->value  => ['flag' => 'PHARMACY_SALE_VISIT_PROCESSED', 'message' => 'Kunjungan dilakukan'],
         Activity::PHARMACY_SALE_VISIT->value . '_' . ActivityStatus::PHARMACY_SALE_VISIT_FINISHED->value  => ['flag' => 'PHARMACY_SALE_VISIT_FINISHED', 'message' => 'Kunjungan selesai'],

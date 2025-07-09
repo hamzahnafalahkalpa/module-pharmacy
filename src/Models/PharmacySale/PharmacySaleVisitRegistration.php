@@ -50,7 +50,7 @@ class PharmacySaleVisitRegistration extends VisitRegistration
         ];
     }
 
-    public static array $activityList = [
+    public array $activityList = [
         Activity::PHARMACY_FLOW->value . '_' . ActivityStatus::PHARMACY_FLOW_QUEUE->value       => ['flag' => 'PHARMACY_FLOW_FRONTLINE', 'message' => 'Dalam antrian kefarmasian'],
         Activity::PHARMACY_FLOW->value . '_' . ActivityStatus::PHARMACY_FLOW_FRONTLINE->value   => ['flag' => 'PHARMACY_FLOW_FRONTLINE', 'message' => 'Masuk tahap frontline'],
         Activity::PHARMACY_FLOW->value . '_' . ActivityStatus::PHARMACY_FLOW_DISPENSE->value    => ['flag' => 'PHARMACY_FLOW_DISPENSE', 'message' => 'Dilakukan dispense'],
