@@ -16,7 +16,7 @@ use Hanafalah\ModulePharmacy\Resources\PharmacySale\{
 class PharmacySale extends SchemasVisitPatient implements ContractsPharmacySale
 {
     protected string $__entity    = 'PharmacySale';
-    public static $pharmacy_sale;
+    public $pharmacy_sale;
 
     protected array $__cache = [
         'show' => [

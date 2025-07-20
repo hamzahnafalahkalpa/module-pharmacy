@@ -15,7 +15,7 @@ use Hanafalah\ModulePharmacy\Enums\{
 class PharmacyExamination extends Examination implements ContractsPharmacyExamination
 {
     protected string $__entity = 'PharmacyExamination';
-    public static $pharmacy_examination;
+    public $pharmacy_examination;
 
     public function commitExamination(): array
     {

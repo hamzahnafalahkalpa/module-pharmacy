@@ -14,7 +14,7 @@ use Hanafalah\ModulePharmacy\Enums\{
 class PharmacySaleExamination extends Assessment implements ContractsPharmacySaleExamination
 {
     protected string $__entity   = 'PharmacySaleExamination';
-    public static $pharmacy_sale_examination_model;
+    public $pharmacy_sale_examination_model;
 
     protected function createConsument(&$consument_attr)
     {
@@ -84,7 +84,7 @@ class PharmacySaleExamination extends Assessment implements ContractsPharmacySal
         $this->setAssessmentProp($attributes);
         static::$assessment_model->save();
         $this->toDispense();
-        return static::$assessment_model = $assessment;
+        return $this->assessment_model = $assessment;
     }
 
     protected function toDispense(): self

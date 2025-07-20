@@ -20,7 +20,7 @@ use Hanafalah\ModulePharmacy\Resources\PharmacySaleVisitRegistration\{
 class PharmacySaleVisitRegistration extends VisitRegistration implements ContractsPharmacySaleVisitRegistration
 {
     protected string $__entity = 'PharmacySaleVisitRegistration';
-    public static $pharmacy_sale_visit_registration;
+    public $pharmacy_sale_visit_registration;
 
     protected array $__cache = [
         'show' => [
@@ -127,7 +127,7 @@ class PharmacySaleVisitRegistration extends VisitRegistration implements Contrac
         $this->toFrontline($pharmacy_sale, $pharmacy_visit_registration);
         $pharmacy_sale->refresh();
 
-        return static::$pharmacy_sale_visit_registration = $pharmacy_visit_registration;
+        return $this->pharmacy_sale_visit_registration = $pharmacy_visit_registration;
     }
 
     protected function toFrontline(?Model $visit_patient = null, ?Model $pharmacy_visit_registration = null): self
