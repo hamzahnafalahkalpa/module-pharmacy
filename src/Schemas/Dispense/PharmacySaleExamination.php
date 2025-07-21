@@ -82,7 +82,7 @@ class PharmacySaleExamination extends Assessment implements ContractsPharmacySal
             }
         }
         $this->setAssessmentProp($attributes);
-        static::$assessment_model->save();
+        $this->assessment_model->save();
         $this->toDispense();
         return $this->assessment_model = $assessment;
     }
