@@ -5,17 +5,13 @@ namespace Hanafalah\ModulePharmacy\Schemas;
 use Hanafalah\ModuleMedicService\Enums\Label;
 use Hanafalah\ModulePatient\Contracts\Data\VisitRegistrationData;
 use Illuminate\Database\Eloquent\Builder;
-use Hanafalah\ModulePharmacy\Contracts\PharmacySaleVisitRegistration as ContractsPharmacySaleVisitRegistration;
+use Hanafalah\ModulePharmacy\Contracts\Schemas\PharmacySaleVisitRegistration as ContractsPharmacySaleVisitRegistration;
 use Illuminate\Database\Eloquent\Model;
 use Hanafalah\ModulePatient\Schemas\VisitRegistration;
 use Hanafalah\ModulePharmacy\Enums\PharmacySale\Activity as PharmacySaleActivity;
 use Hanafalah\ModulePharmacy\Enums\PharmacySale\ActivityStatus as PharmacySaleActivityStatus;
 use Hanafalah\ModulePharmacy\Enums\PharmacySaleVisitRegistration\Activity;
 use Hanafalah\ModulePharmacy\Enums\PharmacySaleVisitRegistration\ActivityStatus;
-use Hanafalah\ModulePharmacy\Resources\PharmacySaleVisitRegistration\{
-    ShowPharmacySaleVisitRegistration,
-    ViewPharmacySaleVisitRegistration
-};
 
 class PharmacySaleVisitRegistration extends VisitRegistration implements ContractsPharmacySaleVisitRegistration
 {
@@ -29,15 +25,6 @@ class PharmacySaleVisitRegistration extends VisitRegistration implements Contrac
             'duration' => 60
         ]
     ];
-
-    public function visitRegistration(mixed $conditionals = null): Builder{
-        $medic_service_id  = $this->MedicServiceModel()->where('name', 'Instalasi Farmasi')->first()->getKey();
-
-        return $this->generalSchemaModel()
-            ->when(isset(request()->search_created_at), function ($query) {
-                $query->withParameters();
-            })->where('medic_service_id', $medic_service_id);
-    }
 
     public function prepareStorePharmacySaleVisitRegistration(?array $attributes = null): Model
     {

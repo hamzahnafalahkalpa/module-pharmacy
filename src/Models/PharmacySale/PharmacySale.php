@@ -16,11 +16,6 @@ class PharmacySale extends VisitPatient
     use HasActivity;
     protected $table = 'visit_patients';
 
-    const PHARMACY_SALE_VISIT = 'PHARMACY_VISIT';
-    const CLINICAL_VISIT      = 'CLINICAL_VISIT';
-
-    public static $flag = 'PHARMACY_VISIT';
-
     protected $casts = [
         'name'            => 'string',
         'consument_name'  => 'string',
@@ -48,13 +43,13 @@ class PharmacySale extends VisitPatient
     {
         parent::booted();
         static::addGlobalScope('flag', function ($query) {
-            $query->flagIn(self::PHARMACY_SALE_VISIT);
+            $query->flagIn('PharmacySale');
         });
         static::creating(function ($query) {
             $query->visit_code ??= static::hasEncoding('PHARMACY_SALE');
             $query->status     ??= Status::PENDING->value;
             $query->visited_at ??= now();
-            $query->flag         = self::PHARMACY_SALE_VISIT;
+            $query->flag       ??= 'PharmacySale';
         });
     }
 

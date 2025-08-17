@@ -30,6 +30,15 @@ return [
         ]
     ],
     'examinations' => [
+        'medicine_prescription' => [
+            'schema' => 'MedicinePrescription',
+        ],
+        'medic_tool_prescription' => [
+            'schema' => 'MedicToolPrescription',
+        ],
+        'mix_prescription' => [
+            'schema' => 'MixPrescription',
+        ]
     ],
     'commands' => [
         Commands\InstallMakeCommand::class

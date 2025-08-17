@@ -1,8 +1,8 @@
 <?php
 
-namespace Hanafalah\ModulePharmacy\Contracts;
+namespace Hanafalah\ModulePharmacy\Contracts\Schemas;
 
-use Hanafalah\ModuleExamination\Contracts\Examination;
+use Hanafalah\ModuleExamination\Contracts\Schemas\Examination;
 
 interface PharmacyExamination extends Examination
 {

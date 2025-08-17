@@ -2,7 +2,7 @@
 
 namespace Hanafalah\ModulePharmacy\Schemas;
 
-use Hanafalah\ModulePharmacy\Contracts\PharmacyExamination as ContractsPharmacyExamination;
+use Hanafalah\ModulePharmacy\Contracts\Schemas\PharmacyExamination as ContractsPharmacyExamination;
 use Hanafalah\ModuleExamination\Schemas\Examination;
 use Illuminate\Database\Eloquent\Model;
 use Hanafalah\ModulePatient\Enums\VisitPatient\VisitStatus;

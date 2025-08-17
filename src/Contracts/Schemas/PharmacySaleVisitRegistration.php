@@ -1,6 +1,6 @@
 <?php
 
-namespace Hanafalah\ModulePharmacy\Contracts;
+namespace Hanafalah\ModulePharmacy\Contracts\Schemas;
 
 use Hanafalah\ModulePatient\Contracts\Schemas\VisitRegistration;
 
