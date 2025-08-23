@@ -12,7 +12,7 @@ use Hanafalah\ModulePharmacy\Enums\PharmacySale\ActivityStatus;
 class PharmacySale extends SchemasVisitPatient implements ContractsPharmacySale
 {
     protected string $__entity    = 'PharmacySale';
-    public $pharmacy_sale;
+    public $pharmacy_sale_model;
 
     protected array $__cache = [
         'show' => [
@@ -30,10 +30,10 @@ class PharmacySale extends SchemasVisitPatient implements ContractsPharmacySale
 
         $pharmacy_sale_model->properties = $attributes['properties'] ?? [];
 
-        $this->initTransaction($pharmacy_sale_dto, $pharmacy_sale_model)
-             ->initPaymentSummary($pharmacy_sale_dto, $pharmacy_sale_model);
+        // $this->initTransaction($pharmacy_sale_dto, $pharmacy_sale_model)
+        //      ->initPaymentSummary($pharmacy_sale_dto, $pharmacy_sale_model);
 
         $pharmacy_sale_model->save();
-        return $pharmacy_sale_model;
+        return $this->pharmacy_sale_model = $pharmacy_sale_model;
     }
 }

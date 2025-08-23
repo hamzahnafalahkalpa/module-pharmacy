@@ -5,8 +5,14 @@ namespace Hanafalah\ModulePharmacy\Data;
 use Illuminate\Support\Str;
 use Hanafalah\ModulePatient\Data\VisitPatientData;
 use Hanafalah\ModulePharmacy\Contracts\Data\PharmacySaleData as DataPharmacySaleData;
+use Spatie\LaravelData\Attributes\MapInputName;
+use Spatie\LaravelData\Attributes\MapName;
 
 class PharmacySaleData extends VisitPatientData implements DataPharmacySaleData{
+    #[MapName('visit_examination_model')]
+    #[MapInputName('visit_examination_model')]
+    public ?object $visit_examination_model = null;
+
     public static function before(array &$attributes){
         $new = static::new();
         $attributes['flag'] ??= 'PharmacySale';
@@ -36,8 +42,8 @@ class PharmacySaleData extends VisitPatientData implements DataPharmacySaleData{
 
             $prescription = [];
             foreach ($visit_examination->assessments as $assessment) {
-                $morph = $assessment->morph;
-                $prescription[Str::snake($morph)] ??= [
+                $morph = Str::snake($assessment->morph);
+                $prescription[$morph] ??= [
                     'data' => []
                 ];
                 $exam = $assessment->exam;
@@ -46,13 +52,13 @@ class PharmacySaleData extends VisitPatientData implements DataPharmacySaleData{
                     'exam' => []
                 ];
                 switch ($morph) {
-                    case 'MedicinePrescription':
-                    case 'MedicToolPrescription':
+                    case 'medicine_prescription':
+                    case 'medic_tool_prescription':
                         unset($exam['card_stock']['id']);
                         unset($exam['card_stock']['stock_movement']['id']);
                     break;
                     break;
-                    case 'MixPrescription':
+                    case 'mix_prescription':
                         foreach ($exam['card_stocks'] as &$exam_card_stock) {
                             unset($exam_card_stock['id']);
                             unset($exam_card_stock['stock_movement']['id']);
@@ -74,13 +80,11 @@ class PharmacySaleData extends VisitPatientData implements DataPharmacySaleData{
                 'payer_id' => $visit_patient->payer_id,
                 'reference_id'   => $visit_examination->getKey(),
                 'reference_type' => $visit_examination->getMorphClass(),
-                'visit_registrations' => [
-                    [
-                        "medic_service_id" => $medic_service->getKey(),
-                        "visit_examination" => [
-                            'examination' => [
-                                "prescription" => $prescription
-                            ]
+                'visit_registration' => [
+                    "medic_service_id" => $medic_service->getKey(),
+                    "visit_examination" => [
+                        'examination' => [
+                            "prescription" => $prescription
                         ]
                     ]
                 ]

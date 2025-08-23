@@ -23,8 +23,10 @@ class PharmacySale extends VisitPatient
         'queue_number'    => 'string',
         'created_at'      => 'date',
         'nik'             => 'string',
+        'flag'            => 'string',
         'dob'             => 'immutable_date',
-        'medical_record'  => 'string'
+        'medical_record'  => 'string',
+        'medic_service_label' => 'string'
     ];
 
     public function getPropsQuery(): array
@@ -35,7 +37,8 @@ class PharmacySale extends VisitPatient
             'nik'             => 'props->prop_patient->nik',
             'medical_record'  => 'props->prop_patient->medical_record',
             'consument_name'  => 'props->prop_consument->name',
-            'consument_phone' => 'props->prop_consument->phone'
+            'consument_phone' => 'props->prop_consument->phone',
+            'medic_service_label' => 'props->prop_visit_registration->prop_medic_service->label'
         ];
     }
 
@@ -56,9 +59,9 @@ class PharmacySale extends VisitPatient
     public function getViewResource(){return ViewPharmacySale::class;}
     public function getShowResource(){return ShowPharmacySale::class;}
     public array $activityList = [
-        Activity::PHARMACY_SALE_VISIT->value . '_' . ActivityStatus::PHARMACY_SALE_VISIT_DRAFT->value     => ['flag' => 'PHARMACY_SALE_VISIT_DRAFT', 'message' => 'Antrian peresepan'],
-        Activity::PHARMACY_SALE_VISIT->value . '_' . ActivityStatus::PHARMACY_SALE_VISIT_PROCESSED->value  => ['flag' => 'PHARMACY_SALE_VISIT_PROCESSED', 'message' => 'Kunjungan dilakukan'],
-        Activity::PHARMACY_SALE_VISIT->value . '_' . ActivityStatus::PHARMACY_SALE_VISIT_FINISHED->value  => ['flag' => 'PHARMACY_SALE_VISIT_FINISHED', 'message' => 'Kunjungan selesai'],
-        Activity::PHARMACY_SALE_VISIT->value . '_' . ActivityStatus::PHARMACY_SALE_VISIT_CANCELLED->value => ['flag' => 'PHARMACY_SALE_VISIT_CANCELLED', 'message' => 'Kunjungan dibatalkan'],
+        Activity::PHARMACY_SALE_VISIT->value . '_' . ActivityStatus::PHARMACY_SALE_VISIT_DRAFT->value     => ['flag' => 'pharmacy_sale_visit_draft', 'message' => 'Antrian peresepan'],
+        Activity::PHARMACY_SALE_VISIT->value . '_' . ActivityStatus::PHARMACY_SALE_VISIT_PROCESSED->value  => ['flag' => 'pharmacy_sale_visit_processed', 'message' => 'Kunjungan dilakukan'],
+        Activity::PHARMACY_SALE_VISIT->value . '_' . ActivityStatus::PHARMACY_SALE_VISIT_FINISHED->value  => ['flag' => 'pharmacy_sale_visit_finished', 'message' => 'Kunjungan selesai'],
+        Activity::PHARMACY_SALE_VISIT->value . '_' . ActivityStatus::PHARMACY_SALE_VISIT_CANCELLED->value => ['flag' => 'pharmacy_sale_visit_cancelled', 'message' => 'Kunjungan dibatalkan'],
     ];
 }

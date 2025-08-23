@@ -51,9 +51,9 @@ class PharmacySaleVisitRegistration extends VisitRegistration
     }
 
     public array $activityList = [
-        Activity::PHARMACY_FLOW->value . '_' . ActivityStatus::PHARMACY_FLOW_QUEUE->value       => ['flag' => 'PHARMACY_FLOW_FRONTLINE', 'message' => 'Dalam antrian kefarmasian'],
-        Activity::PHARMACY_FLOW->value . '_' . ActivityStatus::PHARMACY_FLOW_FRONTLINE->value   => ['flag' => 'PHARMACY_FLOW_FRONTLINE', 'message' => 'Masuk tahap frontline'],
-        Activity::PHARMACY_FLOW->value . '_' . ActivityStatus::PHARMACY_FLOW_DISPENSE->value    => ['flag' => 'PHARMACY_FLOW_DISPENSE', 'message' => 'Dilakukan dispense'],
-        Activity::PHARMACY_FLOW->value . '_' . ActivityStatus::PHARMACY_FLOW_PENYERAHAN->value  => ['flag' => 'PHARMACY_FLOW_DISPENSE', 'message' => 'Telah dilakukan penyerahan']
+        Activity::PHARMACY_FLOW->value . '_' . ActivityStatus::PHARMACY_FLOW_QUEUE->value       => ['flag' => 'pharmacy_flow_frontline', 'message' => 'Dalam antrian kefarmasian'],
+        Activity::PHARMACY_FLOW->value . '_' . ActivityStatus::PHARMACY_FLOW_FRONTLINE->value   => ['flag' => 'pharmacy_flow_frontline', 'message' => 'Masuk tahap frontline'],
+        Activity::PHARMACY_FLOW->value . '_' . ActivityStatus::PHARMACY_FLOW_DISPENSE->value    => ['flag' => 'pharmacy_flow_dispense', 'message' => 'Dilakukan dispense'],
+        Activity::PHARMACY_FLOW->value . '_' . ActivityStatus::PHARMACY_FLOW_PENYERAHAN->value  => ['flag' => 'pharmacy_flow_dispense', 'message' => 'Telah dilakukan penyerahan']
     ];
 }
