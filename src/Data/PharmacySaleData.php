@@ -20,6 +20,20 @@ class PharmacySaleData extends VisitPatientData implements DataPharmacySaleData{
 
         if (isset($attributes['reference_type']) && $attributes['reference_type'] === 'VisitExamination' && !isset($attributes['id'])) {
             $new->generatePharmacySale($attributes);
+        }elseif(!isset($attributes['id'])){
+            $medic_service = $new->MedicServiceModel()->where('label','INSTALASI FARMASI')->firstOrFail();
+            $patient_type_service_id = $new->PatientTypeServiceModel()->where('label','UMUM')->firstOrFail()->getKey();
+            if (isset($medic_service)) {
+                $attributes = array_merge_recursive($attributes, [
+                    "patient_type_service_id" => $patient_type_service_id,
+                    'visit_registration' => [
+                        "medic_service_id" => $medic_service->getKey(),
+                        "visit_examination" => [
+                            "id"=> null
+                        ]
+                    ]
+                ]);
+            }
         }
         parent::before($attributes);
     }
