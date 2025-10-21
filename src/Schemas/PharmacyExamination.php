@@ -2,6 +2,7 @@
 
 namespace Hanafalah\ModulePharmacy\Schemas;
 
+use Hanafalah\ModuleExamination\Contracts\Data\ExaminationData;
 use Hanafalah\ModulePharmacy\Contracts\Schemas\PharmacyExamination as ContractsPharmacyExamination;
 use Hanafalah\ModuleExamination\Schemas\Examination;
 use Illuminate\Database\Eloquent\Model;
@@ -17,8 +18,7 @@ class PharmacyExamination extends Examination implements ContractsPharmacyExamin
     protected string $__entity = 'PharmacyExamination';
     public $pharmacy_examination;
 
-    public function commitExamination(): array
-    {
+    public function commitExamination(ExaminationData $examination_dto): array{
         return $this->transaction(function () {
             $attributes ??= request()->all();
             $this->initializeExamination($attributes);
