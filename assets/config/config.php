@@ -22,7 +22,7 @@ return [
     ],
     "encodings" => [
         'PHARMACY_SALE' => [
-            'flag' => 'PHARMACY_SALE', 'name' => 'Kode Penjualan Resep Obat/BMHP'
+            'label' => 'PHARMACY_SALE', 'name' => 'Kode Penjualan Resep Obat/BMHP'
         ],
     ],
     'database' => [
