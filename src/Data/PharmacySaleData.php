@@ -39,8 +39,8 @@ class PharmacySaleData extends VisitPatientData implements DataPharmacySaleData{
     }
 
     protected function generatePharmacySale(array &$attributes): void{
-        $new = static::new();
-        $visit_examination = $attributes['visit_examination_model'] ?? $new->VisitExaminationModel()->with('visitRegistration.visitPatient')->findOrFail($attributes['visit_examination_id']);
+        // $new = static::new();
+        $visit_examination = $attributes['visit_examination_model'] ?? $this->VisitExaminationModel()->with('visitRegistration.visitPatient')->findOrFail($attributes['visit_examination_id']);
 
         if (!$visit_examination->relationLoaded('assessments')){
             $examinations = config('module-pharmacy.examinations', []);
@@ -60,33 +60,43 @@ class PharmacySaleData extends VisitPatientData implements DataPharmacySaleData{
                 $prescription[$morph] ??= [
                     'data' => []
                 ];
-                $exam = $assessment->exam;
-                $data = [
-                    'parent_id' => $assessment->getKey(),
-                    'exam' => []
-                ];
-                switch ($morph) {
-                    case 'medicine_prescription':
-                    case 'medic_tool_prescription':
-                        unset($exam['card_stock']['id']);
-                        unset($exam['card_stock']['stock_movement']['id']);
-                    break;
-                    break;
-                    case 'mix_prescription':
-                        foreach ($exam['card_stocks'] as &$exam_card_stock) {
-                            unset($exam_card_stock['id']);
-                            unset($exam_card_stock['stock_movement']['id']);
+                $exam = $assessment->exam;                
+
+                if ($morph == 'basic_prescription'){
+                    $new_exam = [];
+                    foreach ($exam as $key => &$exam_medic) {
+                        try {
+                            if (!isset($exam_medic)) continue;
+                            $data = [
+                                'parent_id' => $assessment->getKey(),
+                                'exam' => []
+                            ];        
+                            $this->normalizeCardStock($key, $exam_medic);
+                            $data['exam'] = [
+                                'type' => Str::studly($morph),
+                                'is_pharmacy_sale' => true,
+                                ...$exam_medic
+                            ];
+                            $prescription[Str::studly($morph)]['data'][] = $data;
+                        } catch (\Throwable $th) {
+                            //throw $th;
                         }
-                    break;
+                    }
+                }else{
+                    $data = [
+                        'parent_id' => $assessment->getKey(),
+                        'exam' => []
+                    ];
+                    $this->normalizeCardStock($morph, $exam);
+                    $data['exam'] = $exam;
+                    $prescription[$morph]['data'][] = $data;
                 }
-                $data['exam'] = $exam;
-                $prescription[$morph]['data'][] = $data;
             }
         }
 
         $visit_registration = $visit_examination->visitRegistration;
         $visit_patient = $visit_registration->visitPatient;
-        $medic_service = $new->MedicServiceModel()->where('label','INSTALASI FARMASI')->first();
+        $medic_service = $this->MedicServiceModel()->where('label','INSTALASI FARMASI')->first();
         if (isset($medic_service)) {
             $attributes = array_merge($attributes, [
                 'patient_id' => $visit_patient->patient_id,
@@ -104,5 +114,49 @@ class PharmacySaleData extends VisitPatientData implements DataPharmacySaleData{
                 ]
             ]);
         }
+    }
+
+    protected function normalizeCardStock(string $morph, array &$exam){
+        switch ($morph) {
+            case 'medicine_prescription':
+            case 'medic_tool_prescription':
+                unset($exam['card_stock']['id']);
+                unset($exam['card_stock']['stock_movement']['id']);
+                $exam['morph'] = $morph;
+                $exam['type'] = Str::studly($morph);
+                $this->initializeItemStock($exam);                
+            break;
+            case 'mix_prescription':
+                foreach ($exam['card_stocks'] as &$exam_card_stock) {
+                    unset($exam_card_stock['id']);
+                    unset($exam_card_stock['stock_movement']['id']);
+                    $this->initializeItemStock($exam_card_stock);
+                }
+            break;
+        }
+    }
+
+    protected function initializeItemStock(&$exam){
+        $card_stock     = &$exam['card_stock'];
+        $stock_movement = &$card_stock['stock_movement'];
+        $item_model = $this->ItemModel()->with(['itemStock' => function($query){
+            $query->whereNull('parent_id')->with('childs');
+        }])->findOrFail($card_stock['item_id']);
+        $item_stock = $item_model->itemStock;
+        $stock_movement['item_stock'] = [
+            "id" => $item_model->getKey(),
+            "funding_id" => $item_stock->funding_id,
+            'funding'    => $item_stock->prop_funding,
+            'stock'      => $item_stock->stock,
+            'childs'     => $item_stock->childs->map(function($child){
+                return [
+                    "id" => $child->getKey(),
+                    "funding_id" => $child->funding_id,
+                    'funding'    => $child->prop_funding,
+                    'stock'      => $child->stock,
+                    'actual_qty' => null
+                ];
+            })->toArray()
+        ];
     }
 }
