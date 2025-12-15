@@ -62,27 +62,27 @@ class PharmacySaleData extends VisitPatientData implements DataPharmacySaleData{
                 ];
                 $exam = $assessment->exam;                
 
-                if ($morph == 'basic_prescription'){
-                    $new_exam = [];
-                    foreach ($exam as $key => &$exam_medic) {
-                        try {
-                            if (!isset($exam_medic)) continue;
-                            $data = [
-                                'parent_id' => $assessment->getKey(),
-                                'exam' => []
-                            ];        
-                            $this->normalizeCardStock($key, $exam_medic);
-                            $data['exam'] = [
-                                'type' => Str::studly($morph),
-                                'is_pharmacy_sale' => true,
-                                ...$exam_medic
-                            ];
-                            $prescription[Str::studly($morph)]['data'][] = $data;
-                        } catch (\Throwable $th) {
-                            //throw $th;
-                        }
-                    }
-                }else{
+                // if ($morph == 'basic_prescription'){
+                //     $new_exam = [];
+                //     foreach ($exam as $key => &$exam_medic) {
+                //         try {
+                //             if (!isset($exam_medic)) continue;
+                //             $data = [
+                //                 'parent_id' => $assessment->getKey(),
+                //                 'exam' => []
+                //             ];        
+                //             $this->normalizeCardStock($key, $exam_medic);
+                //             $data['exam'] = [
+                //                 'type' => Str::studly($morph),
+                //                 'is_pharmacy_sale' => true,
+                //                 ...$exam_medic
+                //             ];
+                //             $prescription[Str::studly($morph)]['data'][] = $data;
+                //         } catch (\Throwable $th) {
+                //             //throw $th;
+                //         }
+                //     }
+                // }else{
                     $data = [
                         'parent_id' => $assessment->getKey(),
                         'exam' => []
@@ -91,7 +91,7 @@ class PharmacySaleData extends VisitPatientData implements DataPharmacySaleData{
                     $data['exam'] = $exam;
                     $prescription[$morph]['data'][] = $data;
                 }
-            }
+            // }
         }
 
         $visit_registration = $visit_examination->visitRegistration;

@@ -37,52 +37,52 @@ class DispenseExamination extends Assessment implements ContractsDispenseExamina
     //     }
     // }
 
-    public function prepareStore(mixed $dispense_examination_dto): Model{
-        $assessment_exam = &$dispense_examination_dto->props['exam'];
-        $dispense_model = parent::prepareStore($dispense_examination_dto);
-        if (isset($dispense_examination_dto['consument']) && isset($attributes['consument']['name'])) {
-            // $this->createConsument($attributes['consument']);
-        }
+    // public function prepareStore(mixed $dispense_examination_dto): Model{
+    //     $assessment_exam = &$dispense_examination_dto->props['exam'];
+    //     $dispense_model = parent::prepareStore($dispense_examination_dto);
+    //     if (isset($dispense_examination_dto['consument']) && isset($attributes['consument']['name'])) {
+    //         // $this->createConsument($attributes['consument']);
+    //     }
 
-        if (isset($attributes['dispense'])) {
-            $dispense = &$attributes['dispense'];
-            if (!isset($dispense['prescriptions'])) throw new \Exception('prescriptions is required');
-            if (count($dispense['prescriptions']) == 0) throw new \Exception('prescriptions need at least one item');
+    //     if (isset($attributes['dispense'])) {
+    //         $dispense = &$attributes['dispense'];
+    //         if (!isset($dispense['prescriptions'])) throw new \Exception('prescriptions is required');
+    //         if (count($dispense['prescriptions']) == 0) throw new \Exception('prescriptions need at least one item');
 
-            $card_stock_schema = $this->schemaContract('card_stock');
+    //         $card_stock_schema = $this->schemaContract('card_stock');
 
-            foreach ($dispense['prescriptions'] as $prescription) {
-                $prescript_assessment = $this->AssessmentModel()->findOrFail($prescription['id']);
-                $card_stocks      = $prescript_assessment->card_stocks ?? [$prescript_assessment->card_stock];
-                $card_stock_attrs = $prescription['card_stocks'] ?? [$prescription['card_stock']];
-                $card_stock_ids = array_column($card_stocks, 'id');
-                foreach ($card_stock_attrs as $item) {
-                    $src = \array_search($item['id'], $card_stock_ids);
-                    if (!isset($src)) throw new \Exception('Card stock not found');
+    //         foreach ($dispense['prescriptions'] as $prescription) {
+    //             $prescript_assessment = $this->AssessmentModel()->findOrFail($prescription['id']);
+    //             $card_stocks      = $prescript_assessment->card_stocks ?? [$prescript_assessment->card_stock];
+    //             $card_stock_attrs = $prescription['card_stocks'] ?? [$prescription['card_stock']];
+    //             $card_stock_ids = array_column($card_stocks, 'id');
+    //             foreach ($card_stock_attrs as $item) {
+    //                 $src = \array_search($item['id'], $card_stock_ids);
+    //                 if (!isset($src)) throw new \Exception('Card stock not found');
 
-                    $card_stock_schema->prepareStoreCardStock([
-                        'id'              => $item['id'],
-                        'direction'       => $this->MainMovementModel()::OUT,
-                        'warehouse_id'    => $attributes['warehouse_id'] ?? null,
-                        'pharmacy_id'     => $attributes['pharmacy_id'] ?? null,
-                        'stock_movements' => $item['stock_movements']
-                    ]);
+    //                 $card_stock_schema->prepareStoreCardStock([
+    //                     'id'              => $item['id'],
+    //                     'direction'       => $this->MainMovementModel()::OUT,
+    //                     'warehouse_id'    => $attributes['warehouse_id'] ?? null,
+    //                     'pharmacy_id'     => $attributes['pharmacy_id'] ?? null,
+    //                     'stock_movements' => $item['stock_movements']
+    //                 ]);
 
-                    $card_stocks[$src]['dispense'] = [
-                        'stock_movements' => $item['stock_movements']
-                    ];
-                }
-                if (isset($prescript_assessment->card_stock)) {
-                    $prescript_assessment->setAttribute('card_stock', $card_stocks[0]);
-                } else {
-                    $prescript_assessment->setAttribute('card_stocks', $card_stocks);
-                }
-                $prescript_assessment->save();
-            }
-        }
-        $this->toDispense($dispense_examination_dto);
-        return $dispense_model;
-    }
+    //                 $card_stocks[$src]['dispense'] = [
+    //                     'stock_movements' => $item['stock_movements']
+    //                 ];
+    //             }
+    //             if (isset($prescript_assessment->card_stock)) {
+    //                 $prescript_assessment->setAttribute('card_stock', $card_stocks[0]);
+    //             } else {
+    //                 $prescript_assessment->setAttribute('card_stocks', $card_stocks);
+    //             }
+    //             $prescript_assessment->save();
+    //         }
+    //     }
+    //     $this->toDispense($dispense_examination_dto);
+    //     return $dispense_model;
+    // }
 
     protected function toDispense(DispenseExaminationData $dispense_examination_dto): self{
         $visit_patient      = $dispense_examination_dto->visit_patient_model;
