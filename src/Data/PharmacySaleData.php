@@ -90,8 +90,8 @@ class PharmacySaleData extends VisitPatientData implements DataPharmacySaleData{
                     $this->normalizeCardStock($morph, $exam);
                     $data['exam'] = $exam;
                     $prescription[$morph]['data'][] = $data;
-                }
-            // }
+                // }
+            }
         }
 
         $visit_registration = $visit_examination->visitRegistration;
