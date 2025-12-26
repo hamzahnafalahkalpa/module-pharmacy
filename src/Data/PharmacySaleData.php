@@ -41,7 +41,6 @@ class PharmacySaleData extends VisitPatientData implements DataPharmacySaleData{
     protected function generatePharmacySale(array &$attributes): void{
         // $new = static::new();
         $visit_examination = $attributes['visit_examination_model'] ?? $this->VisitExaminationModel()->with('visitRegistration.visitPatient')->findOrFail($attributes['visit_examination_id']);
-
         if (!$visit_examination->relationLoaded('assessments')){
             $examinations = config('module-pharmacy.examinations', []);
             $keys = array_keys($examinations);
@@ -56,41 +55,19 @@ class PharmacySaleData extends VisitPatientData implements DataPharmacySaleData{
 
             $prescription = [];
             foreach ($visit_examination->assessments as $assessment) {
-                $morph = Str::snake($assessment->morph);
+                $morph = Str::studly($assessment->morph);
                 $prescription[$morph] ??= [
                     'data' => []
                 ];
                 $exam = $assessment->exam;                
 
-                // if ($morph == 'basic_prescription'){
-                //     $new_exam = [];
-                //     foreach ($exam as $key => &$exam_medic) {
-                //         try {
-                //             if (!isset($exam_medic)) continue;
-                //             $data = [
-                //                 'parent_id' => $assessment->getKey(),
-                //                 'exam' => []
-                //             ];        
-                //             $this->normalizeCardStock($key, $exam_medic);
-                //             $data['exam'] = [
-                //                 'type' => Str::studly($morph),
-                //                 'is_pharmacy_sale' => true,
-                //                 ...$exam_medic
-                //             ];
-                //             $prescription[Str::studly($morph)]['data'][] = $data;
-                //         } catch (\Throwable $th) {
-                //             //throw $th;
-                //         }
-                //     }
-                // }else{
-                    $data = [
-                        'parent_id' => $assessment->getKey(),
-                        'exam' => []
-                    ];
-                    $this->normalizeCardStock($morph, $exam);
-                    $data['exam'] = $exam;
-                    $prescription[$morph]['data'][] = $data;
-                // }
+                $data = [
+                    'parent_id' => $assessment->getKey(),
+                    'exam' => []
+                ];
+                $this->normalizeCardStock($morph, $exam);
+                $data['exam'] = $exam;
+                $prescription[$morph]['data'][] = $data;
             }
         }
 
@@ -117,7 +94,11 @@ class PharmacySaleData extends VisitPatientData implements DataPharmacySaleData{
     }
 
     protected function normalizeCardStock(string $morph, array &$exam){
+        $morph = Str::snake($morph);
         switch ($morph) {
+            case 'basic_prescription':
+                $this->normalizeCardStock(Str::snake($exam['type']), $exam);
+            break;
             case 'medicine_prescription':
             case 'medic_tool_prescription':
                 unset($exam['card_stock']['id']);
